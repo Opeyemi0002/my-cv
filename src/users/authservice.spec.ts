@@ -11,9 +11,17 @@ let service:AuthService
 let fakeuserservice: Partial<UsersService>
 
 beforeEach(async() =>{
+    const Users:User[]=[];
     fakeuserservice = {
-        findall:() => Promise.resolve([]) ,
-        create:(email:string, password:string)=> Promise.resolve({id:1, email, password} as User)
+        findall:(email:string) => {
+        const filteredUser = Users.filter((user)=> user.email===email);
+        return Promise.resolve(filteredUser); 
+        },
+        create:(email:string, password:string)=> {
+            const user = {id:Math.floor(Math.random()*10), email,password} as User;
+            Users.push(user);
+            return Promise.resolve(user);
+        }
     };
     
     const module = await Test.createTestingModule({
@@ -52,10 +60,8 @@ it('throws an error if user signs up with email that is in use', async()=> {
         })
 
 it(' signin is called with right email', async()=> {
-    fakeuserservice.findall =()=> Promise.resolve([{email:'a', password:'1'} as User]);
-
-    const user = await expect(service.signin('eri@gmail.com', 'moyin'));
-
+    await service.signup('ola@gmail.com', 'ola')
+    const user = await service.signin('ola@gmail.com', 'ola');
 
     expect(user).toBeDefined();
 });
