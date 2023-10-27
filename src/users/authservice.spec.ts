@@ -2,7 +2,7 @@ import { Test } from "@nestjs/testing";
 import { AuthService } from "./user.authservice";
 import { UsersService } from "./users.service";
 import { User } from "./user.entity";
-import { BadRequestException,NotFoundException } from "@nestjs/common";
+import { BadRequestException,NotFoundException, BadGatewayException } from "@nestjs/common";
 
 
 describe('AuthService', ()=> {
@@ -50,10 +50,9 @@ it('create a user with a sorted password', async()=> {
 })
 
 it('throws an error if user signs up with email that is in use', async()=> {
-    fakeuserservice.findall = () =>
-        Promise.resolve([{id:1, email:'a',password:'1'} as User]);
-    
-          await expect(service.signup('eri@gmail.com', 'moyin')).rejects.toThrow(BadRequestException,);
+    await service.signup('eri@gmail.com', 'moyin')
+
+    await expect(service.signup('eri@gmail.com', 'moyin')).rejects.toThrow(BadRequestException,);
 
         
 
@@ -71,7 +70,13 @@ it('throws if signin is called with an unused email', async()=> {
     await expect(service.signin('errr@gmail.com', 'jkkfkfk')).rejects.toThrow(NotFoundException);
 
     
-})
+});
+
+it('signin with a wrong password', async()=> {
+    await service.signup('ade@gmail.com', 'ade');
+
+    await expect(service.signin('ade@gmail.com','ade01')).rejects.toThrow(BadGatewayException);
+});
 
 
 

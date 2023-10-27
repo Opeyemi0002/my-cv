@@ -34,7 +34,7 @@ export class AuthService {
         if(!checkUser) {
             throw new NotFoundException('email or password is not correct');
         }
-
+        
         const [salt, hashedPassword] = checkUser.password.split('.');
 
         const scrypt = await promisify(_scrypt);
