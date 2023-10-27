@@ -1,0 +1,36 @@
+### create User
+
+Post http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+    "email":"opeoluwa@gmail.com",
+    "password": "ope"
+}
+
+### signin User
+
+Post http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+    "email":"moyin@gmail.com",
+    "password": "moyin"
+}
+
+### get user
+Get http://localhost:3000/auth/whoAmI
+
+### signing user out
+Post http://localhost:3000/auth/signout
+
+### get all users by email
+http://localhost:3000/auth?email=iynu@gmail.com
+
+### update user
+Patch http://localhost:3000/auth/1
+Content-Type: application/json
+
+{
+    "email":"iyanu@gmail.com"
+}
