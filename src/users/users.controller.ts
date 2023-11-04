@@ -1,4 +1,4 @@
-import { Body, Get, Post, Controller, Param, Patch, Delete, Query, Session, UseGuards } from '@nestjs/common';
+import { Body, Get, Post, Controller, Param, Patch, Delete, Query, Session, UseGuards, UseInterceptors } from '@nestjs/common';
 import { createUserDto } from './DTOs/createuser.dto';
 import { UsersService } from './users.service';
 import { updateUserDto } from './DTOs/updateuser.dto';
@@ -6,6 +6,7 @@ import { userResponseDto } from './DTOs/userresponse.dto';
 import {serialize } from './customintecepors';
 import { AuthService } from './user.authservice';
 import { currentUser } from './Decorators/current-user.decorator';
+import { currentUserInteceptor } from './inteceptor/current-user.inteceptor';
 import { User } from './user.entity';
 import { AuthGuard } from './guards/authguard';
 @Controller('/auth')
@@ -21,9 +22,13 @@ export class UsersController {
     // }   
 
     @Get('/whoAmI')
-    @UseGuards(AuthGuard)
+    @UseInterceptors(currentUserInteceptor)
+
+    // @UseGuards(AuthGuard)
     WhoAmI(@currentUser() user:User){
+        console.log(user);
         return user;
+
     }
     
 
@@ -38,6 +43,7 @@ export class UsersController {
         const user = await this.authservice.signup(body.email, body.password);
 
         session.userId = user.id;
+        
         return user;
     }
     
@@ -45,6 +51,7 @@ export class UsersController {
     async signInUser(@Body() body:createUserDto, @Session() session:any){
         const user = await this.authservice.signin(body.email, body.password);
         session.userId = user.id;
+        console.log(session.userId);
         return user;
     }
 

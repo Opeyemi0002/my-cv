@@ -21,7 +21,7 @@ export class AuthService {
         const hashResult = salt + "." + Hash.toString('hex');
 
         const newUser = await this.userService.create(email, hashResult);
-
+        
         return newUser;
 
         

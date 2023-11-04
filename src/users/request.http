@@ -14,8 +14,8 @@ Post http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-    "email":"moyin@gmail.com",
-    "password": "moyin"
+    "email":"opeoluwa@gmail.com",
+    "password": "ope"
 }
 
 ### get user

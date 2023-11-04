@@ -13,7 +13,7 @@ export class currentUserInteceptor implements NestInterceptor {
         return handler.handle();
     }
     const user = await this.userservice.findOneUser(userId);
-    request.currentuser = user;
+     request.currentuser = user;
     
     }
 }

@@ -1,0 +1,27 @@
+### create a new report ###
+
+Post http://localhost:3000/reports/create-report
+Content-Type: application/json
+
+{
+   
+    "salesprice": 500,
+    
+ 
+    "make":"toyota",
+    
+    
+    "model":"corolla",
+    
+   
+    "year":1980,
+
+    
+    "lng":0,
+
+    "lat":0,
+
+    "mileage":1000
+}
+
+
